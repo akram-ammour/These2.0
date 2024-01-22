@@ -9,10 +9,10 @@ import Instagram from "@/components/icons/instagram";
 export default function Home() {
   return (
     <div className="bg-gradient-to-r h-full grainy from-blue-100 to-cyan-100 select-none">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-72">
         <div className="mb-4 flex justify-center">
           <Link href={"mailto:akram.ammour.mail@gmail.com?subject=From%20these2.0"}>
-            <Badge className="text-sm leading-6"  >🎉 Made with love 💖 by Akram Ammour</Badge>
+            <Badge className="text-sm text-[13px] leading-6"  >🎉 Made with love 💖 by Akram Ammour</Badge>
           </Link>
         </div>
         <h1 className="font-semibold text-4xl md:text-7xl text-center min-w-20">
