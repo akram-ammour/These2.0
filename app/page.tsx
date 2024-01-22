@@ -15,7 +15,7 @@ export default function Home() {
             <Badge className="text-sm text-[13px] leading-6"  >🎉 Made with love 💖 by Akram Ammour</Badge>
           </Link>
         </div>
-        <h1 className="font-semibold text-4xl md:text-7xl text-center min-w-20">
+        <h1 className="font-semibold text-4xl md:text-6xl  lg:text-7xl text-center min-w-20">
           A <span className="text-blue-600 font-bold">Free Thesis</span>
           <br/>app.
         </h1>
