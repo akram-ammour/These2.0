@@ -1,10 +1,9 @@
 'use client'
 
-import React from 'react'
-import Logo from './logo'
+import Logo from '@/components/logo'
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
 
 type Props = {}
 

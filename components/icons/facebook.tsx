@@ -1,13 +1,12 @@
 import Image from 'next/image';
-import React, { ReactElement } from 'react';
 
-interface IconProps {
+type IconProps = {
   width: number;
   height: number;
 
 }
 
-const Facebook: React.FC<IconProps> = ({ width = 24, height = 24 }): ReactElement => {
+const Facebook = ({ width = 24, height = 24 }:IconProps) => {
   return (
     <Image
     width={width}

@@ -1,10 +1,11 @@
-import React from 'react'
 
 type Props = {}
 
 const page = (props: Props) => {
   return (
-    <div>search</div>
+    <div className='h-full flex items-center justify-center'>
+
+    </div>
   )
 }
 

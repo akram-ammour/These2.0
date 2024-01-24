@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { ComponentPropsWithRef, PropsWithChildren } from "react";
+import { ComponentPropsWithRef, PropsWithChildren } from "react";
 
 type Props = {
   text: String;

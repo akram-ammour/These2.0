@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import Typewriter from "typewriter-effect";
 
 type Props = {};
@@ -12,7 +11,7 @@ const TypeWriter = (props: Props) => {
       }}
       onInit={(typewriter) => {
         typewriter
-          .typeString("Search by keywords 💫")
+          .typeString("Explore theses 💫")
           .pauseFor(1000)
           .deleteAll()
           .typeString("Combined searching 🌟")
@@ -21,13 +20,10 @@ const TypeWriter = (props: Props) => {
           .typeString("Fast results 🪄")
           .pauseFor(1000)
           .deleteAll()
-          .typeString("for people in instance of thesis ")
+          .typeString("Live updates 🟢")
           .pauseFor(1000)
           .deleteAll()
-          .typeString("practical,efficient and easy to use")
-          .pauseFor(1000)
-          .deleteAll()
-          .typeString("Read Thesis for fun")
+          .typeString("2000+ theses 📑")
           .pauseFor(1000)
           .deleteAll()
           .start();

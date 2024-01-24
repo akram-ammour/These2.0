@@ -21,7 +21,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <Navbar />
-          <div className="h-[calc(100vh-56px)]  bg-neutral-900">{children}</div>
+          <div className="min-h-[calc(100vh-56px)] grainy bg-gradient-to-r from-blue-100 to-cyan-100">
+            {children}
+          </div>
         </Provider>
       </body>
     </html>

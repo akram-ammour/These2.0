@@ -1,13 +1,12 @@
 import Image from 'next/image';
-import React, { ReactElement } from 'react';
 
-interface IconProps {
+type IconProps = {
   width: number;
   height: number;
 
 }
 
-const Instagram: React.FC<IconProps> = ({ width = 24, height = 24 }): ReactElement => {
+const Instagram = ({ width = 24, height = 24 }:IconProps) => {
   return (
     <Image
     width={width}
