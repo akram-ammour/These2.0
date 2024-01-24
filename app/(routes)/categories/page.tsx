@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [isLoading, startTransition] = useTransition();
   const [categories, setCategories] = useState<Category[]>();
   const [error, setError] = useState<string>();
@@ -26,7 +26,7 @@ const page = (props: Props) => {
         })
         // this only catches the .then so i bet it's not that useful
         // .catch((error) => {
-        //   console.log(`[page/cat_error] :${error}`);
+        //   console.log(`[Page/cat_error] :${error}`);
         //   setError("something went wrong");
         //   toast.error("something went wrong please try again");
         // });
@@ -65,4 +65,4 @@ const page = (props: Props) => {
   </div>;
 };
 
-export default page;
+export default Page;
