@@ -1,7 +1,7 @@
 "use server";
 import { formatTitle, getImageByCategory } from "@/lib/utils";
 import * as cheerio from "cheerio";
-import puppeteer, { Browser } from "puppeteer";
+import puppeteer,{options} from "@/webscraper/puppeteer";
 
 export const getAllCategories = async (counter = 0) => {
   // base catalogue url
@@ -9,11 +9,11 @@ export const getAllCategories = async (counter = 0) => {
     "http://lib.fmpm.uca.ma/lib/opac_css/index.php?search_type_asked=simple_search";
   // list of categories
   const listOfCategories: Category[] = [];
-  let browser: Browser;
+  let browser;
 
   try {
     // launcher the puppeteer browser and getting to the new page and waiting for the page to be loaded
-    browser = await puppeteer.launch({ headless: "new" });
+    browser = await puppeteer.launch(options);
     const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: "domcontentloaded",

@@ -39,6 +39,9 @@ const nextConfig = {
                 pathname: '**',
             },
         ],
+    },
+    experimental: {
+        serverComponentsExternalPackages: ['puppeteer-core'],
     }
 };
 
