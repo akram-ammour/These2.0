@@ -50,7 +50,7 @@ export const getAllCategories = async (counter = 0) => {
       data: [...listOfCategories],
     };
   } catch (error) {
-    console.log(`[ERROR_getAllCategories] : ${error}`);
+    console.error(`[ERROR_getAllCategories] : ${error}`);
     // closing the previous browser if it still exists
     if (browser!) {
       browser.close();
@@ -65,6 +65,7 @@ export const getAllCategories = async (counter = 0) => {
       error:
         "Something went wrong while retrieving categories please contact developer !",
       data: [],
+      returnedError :error
     };
   }
 };

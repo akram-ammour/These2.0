@@ -22,6 +22,8 @@ const Page = (props: Props) => {
           } else {
             setError(response.error);
             toast.error(response.error);
+            console.error(response.returnedError)
+            console.log(response.returnedError)
           }
         })
         // this only catches the .then so i bet it's not that useful
