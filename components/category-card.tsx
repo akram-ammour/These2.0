@@ -1,37 +1,38 @@
-"use client"
-import {
-    Card,
-    CardContent,
-    CardFooter
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 // import getBase64, { cn } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import Link from "next/link";
 import { slugify } from "@/lib/utils";
+import { getBase64 } from "@/actions/get-base64";
 
 type Props = {
   category: Category;
+  priority:boolean
 };
 
-const CategoryCard = ({ category }: Props) => {
-    const slug = slugify(category.category)
+const CategoryCard = async ({ category,priority }: Props) => {
+  const slug = slugify(category.category);
+  const myBlurDataUrl = await getBase64(category.image as string)
   return (
     <Link href={`/categories/${slug}`}>
       <Card className="bg-transparent border-none hover:border hover:bg-blue-600/10 transition-colors duration-300">
         <CardContent className="p-2">
-          <AspectRatio ratio={4/ 3} className="bg-muted rounded-md">
+          <AspectRatio ratio={4 / 3} className="bg-muted rounded-md">
             <Image
               src={category.image!}
               alt={category.category}
               fill
               className="rounded-md object-cover"
+              placeholder="blur"
+              blurDataURL={myBlurDataUrl}
+              priority={priority}
             />
           </AspectRatio>
         </CardContent>
         <CardFooter>
-            <h1 className="text-base font-medium">{category.category}</h1>
+          <h1 className="text-base font-medium">{category.category}</h1>
         </CardFooter>
       </Card>
     </Link>

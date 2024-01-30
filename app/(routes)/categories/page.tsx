@@ -1,4 +1,3 @@
-"use client";
 import { getAllCategories } from "@/actions/get-all-categories";
 import CategoryCardsLister from "@/components/category-cards-lister";
 import Loader from "@/components/loader";
@@ -7,41 +6,32 @@ import { toast } from "sonner";
 
 type Props = {};
 
-const Page = (props: Props) => {
-  const [isLoading, startTransition] = useTransition();
-  const [categories, setCategories] = useState<Category[]>();
-  const [error, setError] = useState<string>();
+const Page = async (props: Props) => {
+  const {isLoading,error,success,categories} = await getAllCategories()
 
-  useEffect(() => {
-    startTransition(() => {
-      getAllCategories()
-        .then((response) => {
-          if (response?.success) {
-            setCategories([...response.data]);
-            toast.success(response.success);
-          } else {
-            setError(response.error);
-            toast.error(response.error);
-            console.error(response.returnedError)
-            console.log(response.returnedError)
-          }
-        })
-        // this only catches the .then so i bet it's not that useful
-        // .catch((error) => {
-        //   console.log(`[Page/cat_error] :${error}`);
-        //   setError("something went wrong");
-        //   toast.error("something went wrong please try again");
-        // });
-    });
-  }, []);
+  // useEffect(() => {
+  //   startTransition(() => {
+  //     getAllCategories()
+  //       .then((response) => {
+  //         if (response?.success) {
+  //           setCategories([...response.data]);
+  //           toast.success(response.success);
+  //         } else {
+  //           setError(response.error);
+  //           toast.error(response.error);
+  //           console.error(response.returnedError)
+  //           console.log(response.returnedError)
+  //         }
+  //       })
+  //       // this only catches the .then so i bet it's not that useful
+  //       // .catch((error) => {
+  //       //   console.log(`[Page/cat_error] :${error}`);
+  //       //   setError("something went wrong");
+  //       //   toast.error("something went wrong please try again");
+  //       // });
+  //   });
+  // }, []);
 
-  if (isLoading) {
-    return (
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Loader width={70} height={70} />
-      </div>
-    );
-  }
 
   if (error) {
     return (

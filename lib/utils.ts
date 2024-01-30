@@ -2,6 +2,7 @@ import { imagePerCategory } from "@/lib/constants";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
@@ -34,3 +35,5 @@ export const slugify = (category: string) => {
 export const unSlugify = (category:string) => {
   return formatTitle(category.replace(/-/g," "))
 }
+
+
