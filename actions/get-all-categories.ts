@@ -1,4 +1,5 @@
 "use server";
+import { imagePerCategory } from "@/lib/constants";
 import { formatTitle, getImageByCategory } from "@/lib/utils";
 
 export const getAllCategories = async () => {
@@ -17,11 +18,15 @@ export const getAllCategories = async () => {
 
     //? pushing the not classed yet category because there is these that may not be available in the catalogue but available in the website and it's id is null for me as as an indicator to retrieve it from the website
 
-    listOfCategories.push({
-      category: "Not Classed Yet",
-      id: null,
-      image: getImageByCategory("notclassedyet"),
-    });
+    for (const [key, value] of Object.entries(imagePerCategory)) {
+      
+      listOfCategories.push({
+        category: key,
+        id: null,
+        image: value,
+      });
+      
+    }
 
     return {
       success: "successfully retrieved categories",

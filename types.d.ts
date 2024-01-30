@@ -5,15 +5,18 @@ type Category = {
 };
 
 type These = {
+  ord: number,
+  year: number;
   title: string;
   author: string;
-  publicationYear: number;
-  language: "fr" | "ang";
-  category: Category; // if no category i'm gonna put the thesis in the unassigned category which has an id of -1
-  keywords?: string[];
-  president?: string;
-  rapporteur?: string;
-  jury?: string[];
-  link: string;
-  cote: string;
+  langue: "Français (fre)" | "Anglais (eng)";
+  category: string[]; // if no category i'm gonna put the thesis in the unassigned category which has an id of -1
+  tags: string[];
+  president: string;
+  rapporteur: string;
+  jury: string[];
+  membreAssocie: string | string[] | null;
+  profs:string[] 
+  href: string;
+  // cote: string;
 };
