@@ -1,21 +1,18 @@
 "use client";
 
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
-import * as React from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import {
-    Command,
-    CommandGroup,
-    CommandItem
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, isPartOfNumberRange } from "@/lib/utils";
 import { ScrollArea } from "./ui/scroll-area";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const currentYear = new Date().getFullYear();
 const startYear = 2006;
@@ -26,10 +23,52 @@ const years = Array.from(
     return { value: year.toString(), label: year.toString() };
   }
 ).reverse();
+type Props = {
+  startTransition:React.TransitionStartFunction
+}
+const YearComboBox = ({startTransition}:Props) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string>("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-const YearComboBox = () => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const year = params.get("year");
+    // if(year)
+    if(year && !years.some((item) => item.value === year)){
+      return
+    }
+    setValue(year as string)
+  }, []);
+
+  const updateParams = useCallback(
+    (currentValue: string) => {
+      let params = new URLSearchParams(Array.from(searchParams.entries()));
+      if (currentValue === "") {
+        params.delete("year");
+      } else {
+        params.set("year", currentValue);
+      }
+      startTransition(() => {
+        router.replace(`${pathname}?${params.toString()}`);
+      });
+    },
+    [pathname, router, searchParams, startTransition]
+  );
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const yearQuery = params.get("year") ?? "";
+    if (isPartOfNumberRange(Number(yearQuery))) {
+      setValue(yearQuery);
+    } else {
+      setValue("");
+    }
+  }, [searchParams]);
+
+
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -48,7 +87,7 @@ const YearComboBox = () => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <ScrollArea className="h-60  rounded-md border">
-            <CommandGroup >
+            <CommandGroup>
               {years.map((year) => (
                 <CommandItem
                   key={year.value}
@@ -56,6 +95,8 @@ const YearComboBox = () => {
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    updateParams(currentValue === value ? "" : currentValue);
+
                   }}
                 >
                   {year.label}

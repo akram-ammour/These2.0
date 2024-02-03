@@ -1,9 +1,14 @@
 "use client";
 
-import * as React from "react";
+import {
+  TransitionStartFunction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { ChevronsUpDown, CheckIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, isPartOfCategories } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -18,22 +23,52 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea } from "./ui/scroll-area";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Languages = [
-    {
-        label:"Francais",
-        value:"Fr"
-    },
-    {
-        label:"Anglais",
-        value:"en"
-    },
-]
+  {
+    label: "Francais",
+    value: "fr",
+  },
+  {
+    label: "Anglais",
+    value: "eng",
+  },
+];
+type Props = {
+  startTransition: TransitionStartFunction;
+};
+const LangComboBox = ({ startTransition }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-const LangComboBox = () => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const updateParams = useCallback(
+    (currentValue: string) => {
+      let params = new URLSearchParams(Array.from(searchParams.entries()));
+      if (currentValue === "") {
+        params.delete("lang");
+      } else {
+        params.set("lang", currentValue);
+      }
+      startTransition(() => {
+        router.replace(`${pathname}?${params.toString()}`);
+      });
+    },
+    [pathname, router, searchParams, startTransition]
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const langQuery = params.get("lang") ?? "";
+    if (["fr", "eng"].includes(langQuery)) {
+      setValue(langQuery);
+    } else {
+      setValue("");
+    }
+  }, [searchParams]);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -52,7 +87,7 @@ const LangComboBox = () => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <ScrollArea className="h-20  rounded-md border">
-            <CommandGroup >
+            <CommandGroup>
               {Languages.map((lang) => (
                 <CommandItem
                   key={lang.value}
@@ -60,6 +95,7 @@ const LangComboBox = () => {
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    updateParams(currentValue === value ? "" : currentValue);
                   }}
                 >
                   {lang.label}

@@ -1,7 +1,4 @@
-import Image from 'next/image'
-import React from 'react'
 import CategoryCard from '@/components/category-card'
-import {getBase64} from '@/actions/get-base64'
 
 type Props = {
     categories:Category[] | undefined

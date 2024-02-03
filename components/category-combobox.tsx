@@ -1,37 +1,88 @@
 "use client";
 
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import {
-    Command,
-    CommandGroup,
-    CommandItem
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { ScrollArea } from "./ui/scroll-area";
+import { getAllCategories } from "@/actions/get-all-categories";
+import { toast } from "sonner";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+type categArray = {
+  label: string;
+  value: string;
+};
+type Props = {
+  startTransition: React.TransitionStartFunction;
+};
+const CategoryCombobox = ({ startTransition }: Props) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [categories, setCategories] = useState<categArray[]>([]);
+  const [error, setError] = useState<any>();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-const categories = [
-    {
-        label:"Anatomie",
-        value:"anatomie"
+  useEffect(() => {
+    startTransition(() => {
+      getAllCategories().then((response) => {
+        if (response?.success) {
+          const categArray: categArray[] = response.categories.map((item) => {
+            return {
+              label: item.category,
+              value: slugify(item.category),
+            };
+          });
+          setCategories(categArray);
+        } else {
+          setError(response?.error);
+          toast.error(response.error?.message);
+        }
+      });
+    });
+  }, []);
+
+  const updateParams = useCallback(
+    (currentValue: string) => {
+      let params = new URLSearchParams(Array.from(searchParams.entries()));
+      if (currentValue === "") {
+        params.delete("categ");
+      } else {
+        params.set("categ", currentValue);
+      }
+      startTransition(() => {
+        router.replace(`${pathname}?${params.toString()}`);
+      });
     },
-    {
-        label:"Anatomie clinique",
-        value:"anatomie-clinique"
-    },
-]
+    [pathname, router, searchParams, startTransition]
+  );
 
-const CategoryCombobox = () => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    const categQuery = params.get("categ") ?? "";
+    if (
+      categories.length !== 0 &&
+      categories.map((item) => item.value).includes(categQuery)
+    ) {
+      setValue(categQuery);
+    } else {
+      setValue("");
+    }
+  }, [searchParams]);
+
+  if (error) {
+    // todo make an error page
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -50,7 +101,7 @@ const CategoryCombobox = () => {
       <PopoverContent className="w-[200px] p-0">
         <Command>
           <ScrollArea className="h-60  rounded-md border">
-            <CommandGroup >
+            <CommandGroup>
               {categories.map((categ) => (
                 <CommandItem
                   key={categ.value}
@@ -58,6 +109,7 @@ const CategoryCombobox = () => {
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
+                    updateParams(currentValue === value ? "" : currentValue);
                   }}
                 >
                   {categ.label}

@@ -1,15 +1,7 @@
+import { Card, CardContent } from "@/components/ui/card";
 import { formatTitle, getImageByCategory } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { AspectRatio } from "./ui/aspect-ratio";
+import Link from "next/link";
 
 type Props = {
   these: These;
@@ -17,69 +9,48 @@ type Props = {
 
 const These = ({ these }: Props) => {
   return (
-    // <div className='flex gap-3 bg-white border-gray-400  rounded-sm p-5 mb-4 border-[1px]'>
-    //     <Image
-    //         src={getImageByCategory(these.category[2])}
-    //         width={200}
-    //         height={200}
-    //         alt='image'
-    //     />
-    //     <div className=''>
-
-    //     <p>title: {these.title}</p>
-    //     <p>Author: {these.author}</p>
-    //     <p>Year: {these.category[2]}</p>
-    //     <p>Ord: {these.ord}</p>
-    //     </div>
-    // </div>
-    <Card>
-      {/* <CardHeader>
-          <CardTitle className="truncate" title={these.title}>
-            {these.title}
-          </CardTitle>
-          <CardDescription>Dr. {these.author}</CardDescription>
-        </CardHeader> */}
-      <CardContent className="flex items-center  gap-4 p-2">
-        <div className="bg-muted rounded-md">
-          <Image
-            src={getImageByCategory(these.category[2])}
-            alt="image"
-            width={200}
-            height={100}
-            className="rounded-md object-cover"
-          />
-        </div>
-        <div className="w-full flex flex-col justify-between overflow-hidden p-2">
-          <div className="space-y-2">
-            <h1 className="truncate font-bold text-lg">{these.title}</h1>
-            <p className="truncate font-bold text-base text-blue-600">
-              {these.category[2]}
-            </p>
-            <p className="truncate font-medium text-sm text-gray-400">
-              Dr. {formatTitle(these.author)}
-            </p>
+    <Link href={these.href} target="_blank">
+      <Card className="hover:shadow-blue-600/80 hover:shadow-md transition-all duration-300">
+        <CardContent className="flex items-center  gap-4 p-2">
+          <div className="rounded-md">
+            <Image
+              src={getImageByCategory(these?.category?.[2] || "idk")}
+              alt="image"
+              width={200}
+              height={100}
+              className="rounded-md object-cover -sm:h-20 -sm:w-23"
+            />
           </div>
-          <div className="min-[564px]:flex-row min-[564px]:self-end flex-col self-start flex gap-2">
-            <p className="truncate text-base text-gray-400">
-              Year:{" "}
-              <span className=" text-slate-900">{these.year}</span>
-            </p>
-            <p className="truncate text-base text-gray-400">
-              Ord:{" "}
-              <span className=" text-slate-900">{these.ord}</span>
-            </p>
-            <p className="truncate text-base text-gray-400">
-              Language:{" "}
-              <span className=" text-slate-900">{these.langue}</span>
-            </p>
+          <div className="w-full flex flex-col gap-3 justify-between overflow-hidden p-2">
+            <div className="flex flex-col gap-1">
+              <h1 className=" overflow-hidden truncate max-h-8 font-bold text-[14px] md:text-lg">
+                {these.title}
+              </h1>
+              <p className="truncate font-bold text-[12px] md:text-base text-blue-600">
+                {these?.category?.[2] || "idk"}
+              </p>
+              <p className="truncate font-medium text-[11px] md:text-sm  text-gray-400">
+                Dr. {formatTitle(these.author) || "Not Found"}
+              </p>
+            </div>
+            <div className="min-[564px]:flex-row min-[564px]:self-end flex-col self-start flex gap-1">
+              <p className="truncate  text-gray-400  text-sm sm:text-base text-[10px] md:text-sm ">
+                Year: <span className=" text-slate-900">{these.year}</span>
+              </p>
+              <p className="truncate  text-gray-400  text-sm sm:text-base text-[10px] md:text-sm ">
+                Ord: <span className=" text-slate-900">{these.ord}</span>
+              </p>
+              <p className="truncate  text-gray-400  text-sm sm:text-base text-[10px] md:text-sm ">
+                Language:{" "}
+                <span className=" text-slate-900">
+                  {these.langue.includes("fre") ? "Fr" : "En"}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
-      </CardContent>
-      {/* <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-      <Button>Deploy</Button>
-        </CardFooter> */}
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 };
 

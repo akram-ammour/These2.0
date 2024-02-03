@@ -1,33 +1,37 @@
 "use server";
 import { imagePerCategory } from "@/lib/constants";
 import { formatTitle, getImageByCategory } from "@/lib/utils";
+import { getLocalData } from "./load-data";
 
 export const getAllCategories = async () => {
-  // base catalogue url
-  const url =
-    "http://lib.fmpm.uca.ma/lib/opac_css/index.php?search_type_asked=simple_search";
   // list of categories
   const listOfCategories: Category[] = [];
-
   try {
-      // listOfCategories.push({
-      //   category,
-      //   id,
-      //   image: getImageByCategory(category),
-      // });
+    const { data } = await getLocalData();
 
-    //? pushing the not classed yet category because there is these that may not be available in the catalogue but available in the website and it's id is null for me as as an indicator to retrieve it from the website
-
-    for (const [key, value] of Object.entries(imagePerCategory)) {
-      
-      listOfCategories.push({
-        category: key,
-        id: null,
-        image: value,
-      });
-      
+    for (const these of data) {
+      if (Array.isArray(these.category) && these.category.length === 3) {
+        const categ = these.category[2];
+        if (
+          categ &&
+          !listOfCategories.some((item) => item.category === categ)
+        ) {
+          // If the category is not already in the list, add it
+          listOfCategories.push({
+            category: categ,
+            image: getImageByCategory(categ),
+          });
+        }
+      }
     }
 
+
+    listOfCategories.sort((a, b) => a.category.localeCompare(b.category));
+
+    listOfCategories.push({
+      category: "Not Classed yet",
+      image: getImageByCategory("notclassedyet"),
+    });
     return {
       success: "successfully retrieved categories",
       categories: [...listOfCategories],
@@ -37,10 +41,10 @@ export const getAllCategories = async () => {
 
     return {
       categories: [],
-      error:{
-        message:"something went wrong while retrieving categories",
-        err
-      }
+      error: {
+        message: "something went wrong while retrieving categories",
+        err,
+      },
     };
   }
 };
