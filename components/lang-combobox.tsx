@@ -68,7 +68,7 @@ const LangComboBox = ({ startTransition }: Props) => {
     } else {
       setValue("");
     }
-  }, [searchParams]);
+  }, []);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

@@ -14,12 +14,7 @@ function compareValues(valueA: any, valueB: any) {
 }
 export const sortData = async (
   dataToBeSorted: These[],
-  sortBy: | ""
-  | "orderDesc"
-  | "authorAsc"
-  | "authorDesc"
-  | "titleAsc"
-  | "titleDesc"
+  sortBy: sort
 ) => {
     let sortParams:any;
     if(sortBy === ""){

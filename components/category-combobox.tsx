@@ -77,7 +77,7 @@ const CategoryCombobox = ({ startTransition }: Props) => {
     } else {
       setValue("");
     }
-  }, [searchParams]);
+  }, []);
 
   if (error) {
     // todo make an error page

@@ -1,5 +1,12 @@
 "use client";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
+import React, {
+  KeyboardEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import Loader from "./loader";
 import Logo from "./logo";
 import { Input } from "./ui/input";
@@ -17,6 +24,7 @@ type Props = {
 };
 const SearchInput = ({ showOptions }: Props) => {
   const [isPending, startTransition] = useTransition();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 1005);
   const [showSearchOptions, setShowSearchOptions] =
@@ -25,10 +33,13 @@ const SearchInput = ({ showOptions }: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const handleSearchParams = useCallback(
     (debouncedValue: string) => {
       let params = new URLSearchParams(Array.from(searchParams.entries()));
       if (debouncedValue.length > 0) {
+        params.delete("page"); // todo remove if bug
         params.set("search", debouncedValue);
       } else {
         params.delete("search");
@@ -39,29 +50,44 @@ const SearchInput = ({ showOptions }: Props) => {
     },
     [pathname, router, searchParams]
   );
-  const handleClear = useCallback(
-    () => {
-      setShowSearchOptions(false)
-      let params = new URLSearchParams(Array.from(searchParams.entries()));
-        params.delete("lang");
-        params.delete("year");
-        params.delete("categ");
-      startTransition(() => {
-        router.replace(`${pathname}?${params.toString()}`);
-      });
-    },
-    [pathname, router, searchParams]
-  );
+  const handleClear = useCallback(() => {
+    setShowSearchOptions(false);
+    let params = new URLSearchParams(Array.from(searchParams.entries()));
+    params.delete("lang");
+    params.delete("year");
+    params.delete("categ");
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`);
+    });
+  }, [pathname, router, searchParams]);
 
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
     const searchQuery = params.get("search") ?? "";
     setSearchQuery(searchQuery);
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     handleSearchParams(debouncedSearch);
   }, [debouncedSearch, handleSearchParams]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "f") {
+        e.preventDefault();
+        if (inputRef.current) inputRef.current.focus();
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === "p" || e.key === "s")) {
+        e.preventDefault();
+        return;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
     <div className="flex flex-col mt-32 px-4 sm:px-6 md:px-8">
       <div className="flex flex-col items-center justify-center space-y-4">
@@ -82,6 +108,7 @@ const SearchInput = ({ showOptions }: Props) => {
         <div className="w-full">
           <div className="flex w-full flex-row items-center">
             <Input
+              ref={inputRef}
               placeholder="Search for title, author, category, tag, prof..."
               className="flex-[3] outline-none focus-visible:ring-transparent text-base  border-gray-400 rounded-r-none"
               value={searchQuery}
@@ -122,9 +149,7 @@ const SearchInput = ({ showOptions }: Props) => {
           {/* sort by order / sort by title / sort by author / sort by / orderAsc  */}
           <SortBy startTransition={startTransition} />
         </div>
-        {/* <div className="self-start "> */}
         {/* <p className="font-medium text-slate-700 text-lg">You searched for 🪄:</p> */}
-        {/* </div> */}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ type These = {
   title: string;
   author: string;
   langue: "Français (fre)" | "Anglais (eng)";
-  category: string[] | undefined | null; // if no category i'm gonna put the thesis in the unassigned category which has an id of -1
+  category?: string[] | null; // if no category i'm gonna put the thesis in the unassigned category 
   tags: string[];
   president: string;
   rapporteur: string;
@@ -27,3 +27,11 @@ type sort =
   | "titleDesc"
   | "authorAsc"
   | "authorDesc";
+type searchParams = {
+  search?: string;
+  page?: number;
+  sort?: string;
+  categ?: string;
+  lang?: string;
+  year?: number;
+};

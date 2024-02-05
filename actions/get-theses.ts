@@ -45,11 +45,12 @@ export const getTheses = async ({
     }
 
     const sortedData = await sortData(result, sort);
-
+    const totalTheses = sortedData.length;
+    const totalPages = Math.ceil(totalTheses / nbPerPage) || 1;
     // Extract the subset of data for the specified page
     const pageData = sortedData.slice(startIndex, endIndex);
-    return pageData;
+    return { pageData, totalPages, totalTheses };
   } catch (error) {
-    console.log("error", error);
+    console.log("error [get_theses]", error);
   }
 };

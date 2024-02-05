@@ -98,7 +98,7 @@ const SortBy = ({startTransition }: Props) => {
     } else {
       setSortBy("");
     }
-  }, [searchParams]);
+  }, []);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

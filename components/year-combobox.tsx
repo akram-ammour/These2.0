@@ -65,7 +65,7 @@ const YearComboBox = ({startTransition}:Props) => {
     } else {
       setValue("");
     }
-  }, [searchParams]);
+  }, []);
 
 
 

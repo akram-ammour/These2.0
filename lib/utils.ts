@@ -66,56 +66,38 @@ export const isPartOfSort = (value: string) => {
     "titleDesc",
     "authorAsc",
     "authorDesc",
-  ].includes(value);
+  ].includes(value)
+    ? (value as sort)
+    : "";
 };
 
-export const isPartOfCategories = async (value: string) => {
+export const isPartOfCategories = async (categ: string) => {
   const categories = (await getAllCategories()).categories.map((item) =>
     slugify(item.category)
   );
-  return categories.includes(slugify(value));
+  return categories.includes(slugify(categ)) ? categ : undefined;
 };
 export const isPartOfNumberRange = (year: number) => {
+  if (!year) return undefined;
   const currentYear: number = new Date().getFullYear();
   const baseYear: number = 2006;
-  if (year >= 2006 && year <= currentYear) {
-    return true;
-  } else {
-    return false;
+  if (year >= baseYear && year <= currentYear) {
+    return year;
   }
+  return undefined;
+};
+export const isPartOfLang = (lang: string) => {
+  const languages = ["fr", "eng"];
+  return languages.includes(lang) ? lang : undefined;
 };
 
-export const getSearchParams = async (searchParams: {
-  [key: string]: string | string[] | undefined;
-}) => {
-  // const categories = (await getAllCategories()).categories
-  const search =
-  typeof searchParams.search === "string" ? searchParams.search : "";
-  const sort =
-    typeof searchParams.sortBy === "string"
-      ? isPartOfSort(searchParams.sortBy)
-        ? (searchParams.sortBy as sort)
-        : ""
-      : "";
-  const categ =
-    typeof searchParams.categ === "string"
-      ? (await isPartOfCategories(searchParams.categ))
-        ? searchParams.categ
-        : undefined
-      : undefined;
-  const lang =
-    typeof searchParams.lang === "string"
-      ? ["fr", "eng"].includes(searchParams.lang)
-        ? searchParams.lang as "fr" | "eng"
-        : undefined
-      : undefined;
-  const year =
-    typeof searchParams.year === "string"
-      ? !isNaN(Number(searchParams.year))
-        ? isPartOfNumberRange(Number(searchParams.year))
-          ? Number(searchParams.year)
-          : undefined
-        : undefined
-      : undefined;
-  return { search, categ, lang, year, sort };
+export const getSearchParams = async (searchParams:searchParams) => {
+  const search = searchParams?.search?.trim() as string || "";
+  const page = Number(searchParams?.page)  || 1;
+  const sort = isPartOfSort(searchParams?.sort || "");
+  const categ = await isPartOfCategories(searchParams?.categ || "");
+  const lang = isPartOfLang(searchParams?.lang || "") as "fr" | "eng" | undefined;
+  const year = isPartOfNumberRange(searchParams?.year || NaN);
+
+  return { search, categ, lang, year, sort, page };
 };

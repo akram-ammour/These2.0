@@ -1,41 +1,66 @@
-"use client"
+"use client";
 import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-  } from "@/components/ui/pagination"
-  
-const QueryPagination= () => {
-    return (
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#" isActive>1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">3</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    )
-  }
-  
-  export default QueryPagination
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
+type Props = {
+  currentPage: number;
+  totalPages: number;
+};
+const QueryPagination = ({ currentPage, totalPages }: Props) => {
+  const isPrevDisabled = currentPage === 1;
+  const isNextDisabled = totalPages === currentPage;
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const paginate = useCallback(
+    (where: "prev" | "next") => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (where === "prev") {
+        if (isPrevDisabled) return;
+        params.set("page", `${currentPage - 1}`);
+      } else if (where === "next") {
+        if (isNextDisabled) return;
+        params.set("page", `${currentPage + 1}`);
+      }
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [currentPage]
+  );
+  return (
+    <Pagination>
+      <PaginationContent className="flex items-center justify-between w-full">
+        <PaginationItem>
+          <PaginationPrevious
+            onClick={() => paginate("prev")}
+            isActive={!isPrevDisabled}
+            className={cn(
+              "cursor-pointer",
+              isPrevDisabled && "opacity-55 select-none cursor-not-allowed"
+            )}
+          />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext
+            onClick={() => paginate("next")}
+            isActive={!isNextDisabled}
+            className={cn(
+              "cursor-pointer",
+              isNextDisabled && "opacity-55 select-none cursor-not-allowed"
+            )}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+};
+
+export default QueryPagination;
