@@ -1,24 +1,21 @@
 "use client";
-import React, {
-  KeyboardEventHandler,
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
   useCallback,
   useEffect,
   useRef,
   useState,
-  useTransition,
+  useTransition
 } from "react";
-import Loader from "./loader";
-import Logo from "./logo";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { ChevronDown, Search } from "lucide-react";
-import SortBy from "./sort-by";
-import YearComboBox from "./year-combobox";
+import { useDebounce } from "use-debounce";
 import CategoryCombobox from "./category-combobox";
 import LangComboBox from "./lang-combobox";
-import { cn } from "@/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDebounce } from "use-debounce";
+import Loader from "./loader";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import YearComboBox from "./year-combobox";
 type Props = {
   showOptions: boolean;
 };
@@ -147,7 +144,6 @@ const SearchInput = ({ showOptions }: Props) => {
             </div>
           )}
           {/* sort by order / sort by title / sort by author / sort by / orderAsc  */}
-          <SortBy startTransition={startTransition} />
         </div>
         {/* <p className="font-medium text-slate-700 text-lg">You searched for 🪄:</p> */}
       </div>

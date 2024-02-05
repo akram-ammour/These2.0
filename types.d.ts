@@ -15,7 +15,7 @@ type These = {
   president: string;
   rapporteur: string;
   jury: string[];
-  membreAssocie: string | string[] | null;
+  membreAssocie:  string[] | null;
   profs: string[];
   href: string;
   // cote: string;

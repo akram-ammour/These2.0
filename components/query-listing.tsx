@@ -1,3 +1,4 @@
+import SortBy from "./sort-by";
 import These from "./these";
 
 type Props = {
@@ -15,6 +16,7 @@ const QueryListing = ({
 }: Props) => {
   return (
     <>
+      <SortBy />
       <p className="px-8 font-medium text-slate-700 text-base">
         page <span className="text-blue-600 font-bold">{currentPage}</span> /{" "}
         {totalPages} (

@@ -63,10 +63,8 @@ const sortOptions = [
     value: "authorDesc",
   },
 ];
-type Props = {
-  startTransition: TransitionStartFunction;
-};
-const SortBy = ({startTransition }: Props) => {
+
+const SortBy = () => {
   // const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<sort>("");
@@ -82,11 +80,9 @@ const SortBy = ({startTransition }: Props) => {
       } else {
         params.set("sortBy", currentValue);
       }
-      startTransition(() => {
         router.replace(`${pathname}?${params.toString()}`);
-      });
     },
-    [pathname, router, searchParams,startTransition]
+    [pathname, router, searchParams]
   );
 
   // EFFECT: Set Initial Params
