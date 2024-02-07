@@ -11,6 +11,7 @@ type Props = {
 };
 
 const PdfFullScreen = ({ href, title }: Props) => {
+  console.log("href is: ", href)
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog
