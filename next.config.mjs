@@ -50,6 +50,19 @@ const nextConfig = {
     config.resolve.alias.encoding = false;
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: '/api/get-pdf',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/pdf',
+          },
+        ],
+      },
+    ]
+  },
 };
 
 export default nextConfig;

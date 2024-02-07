@@ -14,7 +14,7 @@ const TheseCard = ({ these }: Props) => {
   return (
     <Card className="  border-2 rounded-lg">
       <CardContent className="flex gap-7 p-5">
-        <PdfRenderer href={these.href} title={title} />
+        <PdfRenderer href={"/api/get-pdf?url=" + these.href} title={title} />
         <div className="w-full  flex-1 flex flex-col space-y-3">
           <p className="text-blue-500">Title</p>
           <p className="text-neutral-800">{these.title}</p>

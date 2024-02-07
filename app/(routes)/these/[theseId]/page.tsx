@@ -30,6 +30,7 @@ const Page = async ({ params: { theseId } }: Props) => {
         </p>
         <Separator />
         <TheseCard these={found} />
+        {/* <embed src={"/api/get-pdf?url=http://wd.fmpm.uca.ma/biblio/theses/annee-htm/FT/2010/these44-10.pdf"} type="" /> */}
       </div>
     </div>
   );
