@@ -3,8 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
   const url = req.url;
-  const test = new URLSearchParams(url)
-  const pdf = new URLSearchParams(url).get("http://localhost:3000/api/get-pdf?url") || "";
+  const parsedUrl = new URL(url);
+  const pdf = parsedUrl.searchParams.get('url') || '';
+  // const test = new URLSearchParams(url)
+  // const pdf = new URLSearchParams(url).get("http://localhost:3000/api/get-pdf?url") || "";
   try {
     // Make a GET request to the server serving the PDF
     const response = await axios.get(pdf, {
@@ -17,6 +19,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     });
   } catch (error) {
     console.error("Error fetching PDF:", error);
-    return NextResponse.json({ message: error,pdf,url,test });
+    return NextResponse.json({ message: error, pdf, url });
   }
 };
