@@ -17,6 +17,6 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     });
   } catch (error) {
     console.error("Error fetching PDF:", error);
-    return NextResponse.json({ message: error,pdf });
+    return NextResponse.json({ message: error,pdf,url });
   }
 };
