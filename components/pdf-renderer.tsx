@@ -25,11 +25,12 @@ const PdfRenderer = ({ title, href }: Props) => {
   }, [isPending]);
 
   const handleLoad = () => {
-    console.log("Embed is loaded pdf-renderer", isPending);
+    // console.log("Embed is loaded pdf-renderer", isPending);
     setIsPending(false); // Set isPending to false when loaded
   };
+
   return (
-    <div>
+    <div className="min-w-[280px] h-[540px]  sm:min-w-[300px]">
       <div className="flex flex-col gap-2 w-full h-full">
         <div className="p-2 shadow-sm border-[1px] rounded-md flex items-center justify-between">
           <p className="font-semibold text-neutral-800">{formatTitle(title)}</p>

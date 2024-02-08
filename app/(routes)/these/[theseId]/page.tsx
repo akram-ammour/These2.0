@@ -23,14 +23,13 @@ const Page = async ({ params: { theseId } }: Props) => {
     return <p>these not found</p>;
   }
   return (
-    <div className="h-full  py-12 px-32 ">
+    <div className="h-full  py-12 px-8 sm:px-12 md:px-20 lg:px-32 ">
       <div className="space-y-4">
         <p className="font-semibold text-3xl text-neutral-800">
-          {"Dr. " + formatTitle(found.author)}
+          {`Dr. ${formatTitle(found.author)}`}
         </p>
         <Separator />
         <TheseCard these={found} />
-        {/* <embed src={"/api/get-pdf?url=http://wd.fmpm.uca.ma/biblio/theses/annee-htm/FT/2010/these44-10.pdf"} type="" /> */}
       </div>
     </div>
   );

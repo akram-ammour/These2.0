@@ -3,77 +3,141 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import PdfRenderer from "./pdf-renderer";
 import { Card, CardContent } from "./ui/card";
+import { slugify } from "@/lib/utils";
+import { Fragment } from "react";
 
 type Props = {
   these: These;
 };
-const Heading = ({
-  title,
-  value,
-  isLink,
-  href,
-}: {
-  title: string;
-  value: string;
-  isLink?: boolean;
-  href?: string;
-}) => {
-  if (isLink) {
-    return (
-      <>
-        <p className="text-gray-400 font-semibold">{title}</p>
-        <Link
-          href={href!}
-          target={"_blank"}
-          className="text-primary underline-offset-4 hover:underline font-medium truncate"
-        >
-          {value}
-        </Link>
-      </>
-    );
-  }
-  return (
-    <>
-      <p className="text-gray-400 font-semibold">{title}</p>
-      <p className="font-medium">{value}</p>
-    </>
-  );
-};
+
 const TheseCard = ({ these }: Props) => {
   const pathname = usePathname().split("/");
   const title = pathname[pathname.length - 1];
   return (
-    <Card className="  border-[1px] rounded-lg ">
-      <CardContent className="flex gap-7 p-5  ">
+    <Card className="  border-[1px] rounded-lg  overflow-hidden">
+      <CardContent className="flex gap-7 p-5 flex-col lg:flex-row">
         <PdfRenderer href={"/api/get-pdf?url=" + these.href} title={title} />
-        <div className="w-full  flex-1 flex flex-col space-y-3 text-sm">
-          <Heading title={"Title"} value={these.title} />
+        <div className="w-full text-wrap p-2 flex-1 flex flex-col space-y-3 text-sm">
+          <p className="text-gray-400 font-semibold">Title</p>
+          <p className="font-medium">{these.title}</p>
 
-          <Heading title={"Author"} value={these.author} />
+          <p className="text-gray-400 font-semibold">Author</p>
+          <p className="font-medium">{these.author}</p>
 
-          <Heading
-            title={"Category"}
-            value={these.category?.join(" > ") || "not Known"}
-          />
+          <p className="text-gray-400 font-semibold">Category</p>
+          <p className="font-medium">
+            {these.category
+              ? these.category.map((cat, index) =>
+                  index === 2 ? (
+                    <Link
+                      href={`/search?categ=${slugify(cat)}`}
+                      className="text-blue-600 font-bold hover:underline"
+                      key={index} // Add a unique key for each element in the map
+                    >
+                      {cat}
+                    </Link>
+                  ) : (
+                    <span key={index}>
+                      {" "}
+                      {/* Add a unique key for each element in the map */}
+                      {cat} {" > "}
+                    </span>
+                  )
+                )
+              : "not Known"}
+          </p>
 
-          <Heading title={"President"} value={these.president} />
+          <p className="text-gray-400 font-semibold">President</p>
+          <Link
+            href={`/search?search=${these.president.slice(
+              these.president.lastIndexOf(" ") + 1
+            )}`}
+            className="text-blue-600 font-bold hover:underline"
+          >
+            {these.president}
+          </Link>
 
-          <Heading title={"Rapporteur"} value={these.rapporteur} />
+          <p className="text-gray-400 font-semibold">Rapporteur</p>
+          <Link
+            href={`/search?search=${these.rapporteur.slice(
+              these.rapporteur.lastIndexOf(" ") + 1
+            )}`}
+            className="text-blue-600 font-bold hover:underline"
+          >
+            {these.rapporteur}
+          </Link>
 
-          <Heading title={"Jury"} value={these.jury.join(" - ")} />
+          <p className="text-gray-400 font-semibold">Jury</p>
+          <p className="font-medium">
+            {these.jury
+              ? these.jury.map((prof, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      href={`/search?search=${prof.slice(
+                        prof.lastIndexOf(" ") + 1
+                      )}`}
+                      className="text-blue-600 font-bold hover:underline"
+                    >
+                      {prof}
+                    </Link>
+                    {index + 1 !== these.jury.length && (
+                      <span key={`separator-${index}`}> - </span>
+                    )}
+                  </Fragment>
+                ))
+              : "not available"}
+          </p>
 
           {these.membreAssocie && (
             <>
-              <Heading
-                title={"Associated Members"}
-                value={these.membreAssocie.join(" - ")}
-              />
+              <p className="text-gray-400 font-semibold">Associated Members</p>
+              <p className="font-medium">
+                {these.membreAssocie.map((mb, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      href={`/search?search=${mb.slice(
+                        mb.lastIndexOf(" ") + 1
+                      )}`}
+                      className="text-blue-600 font-bold hover:underline"
+                    >
+                      {mb}
+                    </Link>
+                    {index + 1 !== these.membreAssocie!.length && (
+                      <span key={`separator-${index}`}> - </span>
+                    )}
+                  </Fragment>
+                ))}
+              </p>
             </>
           )}
 
-          <Heading title={"Tags"} value={these.tags.join(" - ")} />
+          <p className="text-gray-400 font-semibold">Tags</p>
+          <p className="font-medium">
+            {these.tags
+              ? these.tags.map((tag, index) => (
+                  <Fragment key={index}>
+                    <Link
+                      href={`/search?search=${tag}`}
+                      className="text-blue-600 font-bold hover:underline"
+                    >
+                      {tag}
+                    </Link>
+                    {index + 1 !== these.tags.length && (
+                      <span key={`separator-${index}`}> - </span>
+                    )}
+                  </Fragment>
+                ))
+              : "no tags"}
+          </p>
 
-          <Heading title={"href"} value={these.href} href={these.href} isLink />
+          <p className="text-gray-400 font-semibold">Link</p>
+          <Link
+            href={these.href}
+            target={"_blank"}
+            className="text-primary underline-offset-4 hover:underline font-medium truncate"
+          >
+            {these.href}
+          </Link>
         </div>
       </CardContent>
     </Card>

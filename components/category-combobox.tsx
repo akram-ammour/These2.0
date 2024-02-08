@@ -90,7 +90,7 @@ const CategoryCombobox = ({ startTransition }: Props) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[240px] justify-between "
         >
           {value
             ? categories.find((categ) => categ.value === value)?.label

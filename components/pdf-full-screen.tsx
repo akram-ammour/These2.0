@@ -45,7 +45,7 @@ const PdfFullScreen = ({ href, title }: Props) => {
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-7xl w-full h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="w-full p-4  max-w-6xl h-full space-y-1 relative">
+        <div className="w-full   max-w-6xl h-full space-y-1 relative">
           <p className="font-semibold text-neutral-800 text-lg">
             {formatTitle(title)}
           </p>
