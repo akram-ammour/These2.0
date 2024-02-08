@@ -23,7 +23,7 @@ const Page = async ({ params: { theseId } }: Props) => {
     return <p>these not found</p>;
   }
   return (
-    <div className="h-full  py-12 px-32">
+    <div className="h-full  py-12 px-32 ">
       <div className="space-y-4">
         <p className="font-semibold text-3xl text-neutral-800">
           {"Dr. " + formatTitle(found.author)}

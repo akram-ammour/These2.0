@@ -8,8 +8,11 @@ type Props = {
 };
 
 const These = ({ these }: Props) => {
+  const integral = `these${
+    these.ord < 10 ? "0" + these.ord.toString() : these.ord
+  }-${these.year.toString().slice(2)}`;
   return (
-    <Link href={these.href} target="_blank">
+    <Link href={`/these/${integral}`}>
       <Card className="hover:shadow-blue-600/80 hover:shadow-md transition-all duration-300">
         <CardContent className="flex items-center  gap-4 p-2">
           <div className="rounded-md">

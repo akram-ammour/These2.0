@@ -1,43 +1,79 @@
 "use client";
-import React from "react";
-import { Card, CardContent } from "./ui/card";
 import Link from "next/link";
-import PdfRenderer from "./pdf-renderer";
 import { usePathname } from "next/navigation";
+import PdfRenderer from "./pdf-renderer";
+import { Card, CardContent } from "./ui/card";
+
 type Props = {
   these: These;
 };
-
+const Heading = ({
+  title,
+  value,
+  isLink,
+  href,
+}: {
+  title: string;
+  value: string;
+  isLink?: boolean;
+  href?: string;
+}) => {
+  if (isLink) {
+    return (
+      <>
+        <p className="text-gray-400 font-semibold">{title}</p>
+        <Link
+          href={href!}
+          target={"_blank"}
+          className="text-primary underline-offset-4 hover:underline font-medium truncate"
+        >
+          {value}
+        </Link>
+      </>
+    );
+  }
+  return (
+    <>
+      <p className="text-gray-400 font-semibold">{title}</p>
+      <p className="font-medium">{value}</p>
+    </>
+  );
+};
 const TheseCard = ({ these }: Props) => {
   const pathname = usePathname().split("/");
   const title = pathname[pathname.length - 1];
   return (
-    <Card className="  border-2 rounded-lg">
-      <CardContent className="flex gap-7 p-5">
+    <Card className="  border-[1px] rounded-lg ">
+      <CardContent className="flex gap-7 p-5  ">
         <PdfRenderer href={"/api/get-pdf?url=" + these.href} title={title} />
-        <div className="w-full  flex-1 flex flex-col space-y-3">
-          <p className="text-blue-500">Title</p>
-          <p className="text-neutral-800">{these.title}</p>
-          <p className="text-blue-500">Author</p>
-          <p className="text-neutral-800">{these.author}</p>
-          <p className="text-blue-500">Category</p>
-          <p className="text-neutral-800">{these.category?.join(" > ")}</p>
-          <p className="text-blue-500">President</p>
-          <p className="text-neutral-800">{these.president}</p>
-          <p className="text-blue-500">Rapporteur</p>
-          <p className="text-neutral-800">{these.rapporteur}</p>
-          <p className="text-blue-500">Jury</p>
-          <p className="text-neutral-800">{these.jury.join(" - ")}</p>
+        <div className="w-full  flex-1 flex flex-col space-y-3 text-sm">
+          <Heading title={"Title"} value={these.title} />
+
+          <Heading title={"Author"} value={these.author} />
+
+          <Heading
+            title={"Category"}
+            value={these.category?.join(" > ") || "not Known"}
+          />
+
+          <Heading title={"President"} value={these.president} />
+
+          <Heading title={"Rapporteur"} value={these.rapporteur} />
+
+          <Heading title={"Jury"} value={these.jury.join(" - ")} />
+
           {these.membreAssocie && (
             <>
-              <p className="text-blue-500">Associated Members</p>
-              <p className="text-neutral-800">
-                {these.membreAssocie.join(" - ")}
-              </p>
+              <Heading
+                title={"Associated Members"}
+                value={these.membreAssocie.join(" - ")}
+              />
             </>
           )}
-          <p className="text-blue-500">Tags</p>
-          <p className="text-neutral-800">{these.tags.join(" - ")}</p>
+
+          <Heading title={"Tags"} value={these.tags.join(" - ")} />
+
+          <Heading title={"href"} value={these.href} href={these.href} isLink />
         </div>
       </CardContent>
     </Card>

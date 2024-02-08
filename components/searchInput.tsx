@@ -2,13 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useTransition
-} from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useDebounce } from "use-debounce";
 import CategoryCombobox from "./category-combobox";
 import LangComboBox from "./lang-combobox";
@@ -23,7 +17,7 @@ const SearchInput = ({ showOptions }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch] = useDebounce(searchQuery, 1005);
+  const [debouncedSearch] = useDebounce(searchQuery, 750);
   const [showSearchOptions, setShowSearchOptions] =
     useState<boolean>(showOptions);
   const router = useRouter();
