@@ -17,7 +17,7 @@ const CategoryCard = async ({ category,priority }: Props) => {
   const myBlurDataUrl = await getBase64(category.image as string)
 
   return (
-    <Link href={`/categories/${slug}`}>
+    <Link href={`/search?categ=${slug}`}>
       <Card className="bg-transparent border-none hover:border hover:bg-blue-600/10 transition-colors duration-300">
         <CardContent className="p-2">
           <AspectRatio ratio={4 / 3} className="bg-muted rounded-md">

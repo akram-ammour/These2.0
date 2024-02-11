@@ -24,13 +24,14 @@ type Props = {
   startTransition: React.TransitionStartFunction;
 };
 const CategoryCombobox = ({ startTransition }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [categories, setCategories] = useState<categArray[]>([]);
   const [error, setError] = useState<any>();
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     startTransition(() => {
@@ -71,13 +72,13 @@ const CategoryCombobox = ({ startTransition }: Props) => {
     const categQuery = params.get("categ") ?? "";
     if (
       categories.length !== 0 &&
-      categories.map((item) => item.value).includes(categQuery)
+      categories.map((item) => slugify(item.value)).includes(categQuery)
     ) {
       setValue(categQuery);
     } else {
       setValue("");
     }
-  }, []);
+  }, [categories]);
 
   if (error) {
     // todo make an error page

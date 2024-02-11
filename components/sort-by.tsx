@@ -5,7 +5,7 @@ import {
   TransitionStartFunction,
   useCallback,
   useEffect,
-  useState
+  useState,
 } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -75,12 +75,13 @@ const SortBy = () => {
   const updateParams = useCallback(
     (currentValue: sort) => {
       let params = new URLSearchParams(Array.from(searchParams.entries()));
+      params.delete("page"); // if user presses sort in another page return to page 1
       if (currentValue === "") {
         params.delete("sortBy");
       } else {
         params.set("sortBy", currentValue);
       }
-        router.replace(`${pathname}?${params.toString()}`);
+      router.replace(`${pathname}?${params.toString()}`);
     },
     [pathname, router, searchParams]
   );

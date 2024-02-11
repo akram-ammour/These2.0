@@ -8,6 +8,7 @@ const TypeWriter = (props: Props) => {
     <Typewriter
       options={{
         loop: true,
+        cursor: "_",
       }}
       onInit={(typewriter) => {
         typewriter
@@ -20,7 +21,7 @@ const TypeWriter = (props: Props) => {
           .typeString("Fast results 🪄")
           .pauseFor(1000)
           .deleteAll()
-          .typeString("Live updates 🟢")
+          .typeString("Live updates 🔵")
           .pauseFor(1000)
           .deleteAll()
           .typeString("2000+ theses 📑")

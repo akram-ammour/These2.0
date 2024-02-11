@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import PdfRenderer from "./pdf-renderer";
 import { Card, CardContent } from "./ui/card";
-import { slugify } from "@/lib/utils";
+import { getProfName, slugify } from "@/lib/utils";
 import { Fragment } from "react";
 
 type Props = {
@@ -11,18 +11,20 @@ type Props = {
 };
 
 const TheseCard = ({ these }: Props) => {
-  const pathname = usePathname().split("/");
-  const title = pathname[pathname.length - 1];
+  const params = useParams<{ theseId: string }>();
+  const title = params.theseId;
   return (
     <Card className="  border-[1px] rounded-lg  overflow-hidden">
       <CardContent className="flex gap-7 p-5 flex-col lg:flex-row">
         <PdfRenderer href={"/api/get-pdf?url=" + these.href} title={title} />
-        <div className="w-full text-wrap p-2 flex-1 flex flex-col space-y-3 text-sm">
+        <div className="w-full   text-wrap p-4 flex-1 flex flex-col space-y-3 text-sm">
           <p className="text-gray-400 font-semibold">Title</p>
           <p className="font-medium">{these.title}</p>
 
           <p className="text-gray-400 font-semibold">Author</p>
-          <p className="font-medium">{these.author}</p>
+          <p className="font-medium">
+            {these.author || "author name not in Database"}
+          </p>
 
           <p className="text-gray-400 font-semibold">Category</p>
           <p className="font-medium">
@@ -44,14 +46,12 @@ const TheseCard = ({ these }: Props) => {
                     </span>
                   )
                 )
-              : "not Known"}
+              : "Not Available"}
           </p>
 
           <p className="text-gray-400 font-semibold">President</p>
           <Link
-            href={`/search?search=${these.president.slice(
-              these.president.lastIndexOf(" ") + 1
-            )}`}
+            href={`/search?search=${getProfName(these.president)}`}
             className="text-blue-600 font-bold hover:underline"
           >
             {these.president}
@@ -59,9 +59,7 @@ const TheseCard = ({ these }: Props) => {
 
           <p className="text-gray-400 font-semibold">Rapporteur</p>
           <Link
-            href={`/search?search=${these.rapporteur.slice(
-              these.rapporteur.lastIndexOf(" ") + 1
-            )}`}
+            href={`/search?search=${getProfName(these.rapporteur)}`}
             className="text-blue-600 font-bold hover:underline"
           >
             {these.rapporteur}
@@ -73,9 +71,7 @@ const TheseCard = ({ these }: Props) => {
               ? these.jury.map((prof, index) => (
                   <Fragment key={index}>
                     <Link
-                      href={`/search?search=${prof.slice(
-                        prof.lastIndexOf(" ") + 1
-                      )}`}
+                      href={`/search?search=${getProfName(prof)}`}
                       className="text-blue-600 font-bold hover:underline"
                     >
                       {prof}
@@ -85,7 +81,7 @@ const TheseCard = ({ these }: Props) => {
                     )}
                   </Fragment>
                 ))
-              : "not available"}
+              : "Not Available"}
           </p>
 
           {these.membreAssocie && (
@@ -95,9 +91,7 @@ const TheseCard = ({ these }: Props) => {
                 {these.membreAssocie.map((mb, index) => (
                   <Fragment key={index}>
                     <Link
-                      href={`/search?search=${mb.slice(
-                        mb.lastIndexOf(" ") + 1
-                      )}`}
+                      href={`/search?search=${getProfName(mb)}`}
                       className="text-blue-600 font-bold hover:underline"
                     >
                       {mb}
@@ -127,7 +121,7 @@ const TheseCard = ({ these }: Props) => {
                     )}
                   </Fragment>
                 ))
-              : "no tags"}
+              : "Not Available"}
           </p>
 
           <p className="text-gray-400 font-semibold">Link</p>

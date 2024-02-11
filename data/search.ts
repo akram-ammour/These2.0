@@ -1,3 +1,5 @@
+import { slugify } from "@/lib/utils";
+
 function normalizeString(str: string) {
   return str
     .normalize("NFD")
@@ -88,11 +90,13 @@ export const combinedSearch = async (
     return Object.entries(criteria).every(([key, value]) => {
       if (key === "category") {
         // For category, check if the lowercase value is included
+        // console.log(value)
+        // console.log(new Date().getMilliseconds())
         return (
           item[key] &&
           Array.isArray(item[key]) &&
           (item[key] as string[]).some((entry) =>
-            entry.toLowerCase().includes(String(value).toLowerCase())
+            slugify(entry).toLowerCase().includes(String(value).toLowerCase())
           )
         );
       } else if (key === "year") {

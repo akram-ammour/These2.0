@@ -1,10 +1,15 @@
 import { getAllCategories } from "@/actions/get-all-categories";
 import CategoryCardsLister from "@/components/category-cards-lister";
 import Loader from "@/components/loader";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 type Props = {};
 
+export const metadata: Metadata = {
+  title: "These2.0 | Categories",
+  description: "Our selection of categories...",
+};
 const Page = async (props: Props) => {
   const { categories,error } = await getAllCategories();
 

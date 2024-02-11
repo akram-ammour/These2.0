@@ -43,7 +43,7 @@ export const getTheses = async ({
         year,
       });
     }
-
+    // 
     const sortedData = await sortData(result, sort);
     const totalTheses = sortedData.length;
     const totalPages = Math.ceil(totalTheses / nbPerPage) || 1;

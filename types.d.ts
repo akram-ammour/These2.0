@@ -30,7 +30,7 @@ type sort =
 type searchParams = {
   search?: string;
   page?: number;
-  sort?: string;
+  sortBy?: string;
   categ?: string;
   lang?: string;
   year?: number;

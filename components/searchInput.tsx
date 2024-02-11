@@ -14,24 +14,33 @@ type Props = {
   showOptions: boolean;
 };
 const SearchInput = ({ showOptions }: Props) => {
-  const [isPending, startTransition] = useTransition();
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch] = useDebounce(searchQuery, 750);
-  const [showSearchOptions, setShowSearchOptions] =
-    useState<boolean>(showOptions);
+  // for route / pathname / params navigation
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // for the transition effect
+  const [isPending, startTransition] = useTransition();
+
+  // for search options
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
+  const [debouncedSearch] = useDebounce(searchQuery, 750);
+  const [showSearchOptions, setShowSearchOptions] =
+    useState<boolean>(showOptions);
+
+  // for focusing the input with ctrl + f
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleSearchParams = useCallback(
     (debouncedValue: string) => {
-      let params = new URLSearchParams(Array.from(searchParams.entries()));
+      let params = new URLSearchParams(searchParams);
+
       if (debouncedValue.length > 0) {
-        params.delete("page"); // todo remove if bug
         params.set("search", debouncedValue);
+        // params.delete("page")
+        // todo find a way to fix the issue that when user is in another page and searches he appears in firstPage
       } else {
         params.delete("search");
       }
@@ -43,20 +52,22 @@ const SearchInput = ({ showOptions }: Props) => {
   );
   const handleClear = useCallback(() => {
     setShowSearchOptions(false);
-    let params = new URLSearchParams(Array.from(searchParams.entries()));
+    let params = new URLSearchParams(searchParams);
     params.delete("lang");
     params.delete("year");
     params.delete("categ");
+    params.delete("page"); // for user to return to 1st page
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`);
     });
   }, [pathname, router, searchParams]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(Array.from(searchParams.entries()));
-    const searchQuery = params.get("search") ?? "";
-    setSearchQuery(searchQuery);
-  }, []);
+  //! removed this if causes error return to it
+  // useEffect(() => {
+  //   const params = new URLSearchParams(searchParams);
+  //   const searchQuery = params.get("search") ?? "";
+  //   setSearchQuery(searchQuery);
+  // }, []);
 
   useEffect(() => {
     handleSearchParams(debouncedSearch);
@@ -103,9 +114,7 @@ const SearchInput = ({ showOptions }: Props) => {
               placeholder="Search for title, author, category, tag, prof..."
               className="flex-[3] outline-none focus-visible:ring-transparent text-base  border-gray-400 rounded-r-none"
               value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Button className="rounded-l-none block">
               <Search className="h-4 w-4" />
@@ -137,9 +146,7 @@ const SearchInput = ({ showOptions }: Props) => {
               </Button>
             </div>
           )}
-          {/* sort by order / sort by title / sort by author / sort by / orderAsc  */}
         </div>
-        {/* <p className="font-medium text-slate-700 text-lg">You searched for 🪄:</p> */}
       </div>
     </div>
   );

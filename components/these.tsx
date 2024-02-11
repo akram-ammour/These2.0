@@ -33,7 +33,7 @@ const These = ({ these }: Props) => {
                 {these?.category?.[2] || "idk"}
               </p>
               <p className="truncate font-medium text-[11px] md:text-sm  text-gray-400">
-                Dr. {formatTitle(these.author) || "Not Found"}
+                Dr. {formatTitle(these.author) || "Not Available"}
               </p>
             </div>
             <div className="min-[564px]:flex-row min-[564px]:self-end flex-col self-start flex gap-1">
@@ -46,7 +46,7 @@ const These = ({ these }: Props) => {
               <p className="truncate  text-gray-400  text-sm sm:text-base text-[10px] md:text-sm ">
                 Language:{" "}
                 <span className=" text-slate-900">
-                  {these.langue.includes("fre") ? "Fr" : "En"}
+                  {these.langue.includes("fre") ? "Fr" : "Eng"}
                 </span>
               </p>
             </div>

@@ -18,8 +18,11 @@ const QueryListing = ({
     <>
       <SortBy />
       <p className="px-8 font-medium text-slate-700 text-base">
-        page <span className="text-blue-600 font-bold">{currentPage}</span> /{" "}
-        {totalPages} (
+        page{" "}
+        <span className="text-blue-600 font-bold">
+          {totalTheses === 0 ? "1" : currentPage}
+        </span>{" "}
+        / {totalPages} (
         {totalTheses === 0 ? "0 results found" : `${totalTheses} results found`}
         )
       </p>

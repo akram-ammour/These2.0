@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 type Props = {
   currentPage: number;
   totalPages: number;
@@ -35,6 +35,18 @@ const QueryPagination = ({ currentPage, totalPages }: Props) => {
     },
     [currentPage]
   );
+
+  useEffect(() => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    let page = params.get("page") ?? 1;
+    page = Number(page)
+    console.log(page)
+    // if(year)
+    if(page < 1 || page > totalPages){
+      params.delete("page")
+      router.replace(`${pathname}?${params.toString()}`);
+    }
+  }, []);
   return (
     <Pagination>
       <PaginationContent className="flex items-center justify-between w-full">

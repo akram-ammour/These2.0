@@ -20,6 +20,25 @@ export const formatTitle = (word: string) => {
     .join(" ");
 };
 
+export const getProfName = (inputString:string) : string => {
+  // Split the input string into words
+  const words = inputString.split(/\s+/);
+
+  // Initialize variables to store the length of the longest word and the longest words found
+  let minLength = 2;
+  let largestWords = [];
+
+  // Iterate through each word
+  for (let word of words) {
+    if(word.length >= minLength && !word.toLowerCase().includes("pr") && !word.includes(".")){
+      largestWords.push(word.toLowerCase().trim())
+    }
+  }
+
+  // Return the array of largest words joined by a space
+  return largestWords.join(" ");
+};
+
 // get the image already dummy typed in a constants file in
 type categoryImage = keyof typeof imagePerCategory;
 
@@ -67,7 +86,7 @@ export const isPartOfSort = (value: string) => {
     "authorAsc",
     "authorDesc",
   ].includes(value)
-    ? (value as sort)
+    ? value
     : "";
 };
 
@@ -91,13 +110,16 @@ export const isPartOfLang = (lang: string) => {
   return languages.includes(lang) ? lang : undefined;
 };
 
-export const getSearchParams = async (searchParams:searchParams) => {
-  const search = searchParams?.search?.trim() as string || "";
-  const page = Number(searchParams?.page)  || 1;
-  const sort = isPartOfSort(searchParams?.sort || "");
+export const getSearchParams = async (searchParams: searchParams) => {
+  const search = (searchParams?.search?.trim() as string) || "";
+  const page = Number(searchParams?.page) || 1;
+  const sort = isPartOfSort(searchParams?.sortBy || "") as sort;
   const categ = await isPartOfCategories(searchParams?.categ || "");
-  const lang = isPartOfLang(searchParams?.lang || "") as "fr" | "eng" | undefined;
+  const lang = isPartOfLang(searchParams?.lang || "") as
+    | "fr"
+    | "eng"
+    | undefined;
   const year = isPartOfNumberRange(searchParams?.year || NaN);
-
+  // console.log(sort,categ,lang,year,sort,page);
   return { search, categ, lang, year, sort, page };
 };

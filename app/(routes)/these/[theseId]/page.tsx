@@ -2,6 +2,7 @@ import { getLocalData } from "@/actions/load-data";
 import TheseCard from "@/components/these-card";
 import { Separator } from "@/components/ui/separator";
 import { formatTitle } from "@/lib/utils";
+import { Metadata, ResolvingMetadata } from "next";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -9,7 +10,14 @@ type Props = {
     theseId: string;
   };
 };
-
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  return {
+    title: `these2.0 | ${formatTitle(params.theseId)}`,
+  };
+}
 const Page = async ({ params: { theseId } }: Props) => {
   const isMatch = theseId.match(/^these(\d+)-(\d+)$/);
 

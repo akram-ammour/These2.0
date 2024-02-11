@@ -34,7 +34,7 @@ const YearComboBox = ({startTransition}:Props) => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(searchParams);
     const year = params.get("year");
     // if(year)
     if(year && !years.some((item) => item.value === year)){
