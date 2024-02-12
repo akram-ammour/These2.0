@@ -2,9 +2,13 @@ function compareValues(valueA: any, valueB: any) {
   if (typeof valueA === "string" && typeof valueB === "string") {
     // Case-insensitive string comparison
     return valueA.localeCompare(valueB, undefined, { sensitivity: "base" });
-  } else if (typeof valueA === "number" && typeof valueB === "number") {
+  } else if (
+    typeof valueA === "number" &&
+    typeof valueB === "number" &&
+    Number(valueA)
+  ) {
     // Numeric comparison
-    return valueA - valueB;
+    return Number(valueA) - Number(valueB);
   } else {
     // Fallback to default comparison for other types
     return String(valueA).localeCompare(String(valueB), undefined, {
@@ -12,44 +16,41 @@ function compareValues(valueA: any, valueB: any) {
     });
   }
 }
-export const sortData = async (
-  dataToBeSorted: These[],
-  sortBy: sort
-) => {
-    let sortParams:any;
-    if(sortBy === ""){
-        sortParams = {
-            year:"asc",
-            order:"asc",
-        }
-    }
-    else if(sortBy === "orderDesc"){
-        sortParams = {
-            year:"desc",
-            order:"desc",
-        }
-    }
-    else if(sortBy === "authorAsc"){
-        sortParams = {
-            author:"asc"
-        }
-    }
-    else if(sortBy === "authorDesc"){
-        sortParams = {
-            author:"desc"
-        }
-    }
-    else if(sortBy === "titleAsc"){
-        sortParams = {
-            title:"asc"
-        }
-    }
-    else if(sortBy === "titleDesc"){
-        sortParams = {
-            title:"desc"
-        }
-    }
-    
+type sortParamsType = {
+  year?: "asc" | "desc";
+  order?: "asc" | "desc";
+  title?: "asc" | "desc";
+  author?: "asc" | "desc";
+};
+export const sortData = async (dataToBeSorted: These[], sortBy: sort) => {
+  let sortParams: sortParamsType = {};
+  if (sortBy === "") {
+    sortParams = {
+      year: "asc",
+      order: "asc",
+    };
+  } else if (sortBy === "orderDesc") {
+    sortParams = {
+      year: "desc",
+      order: "desc",
+    };
+  } else if (sortBy === "authorAsc") {
+    sortParams = {
+      author: "asc",
+    };
+  } else if (sortBy === "authorDesc") {
+    sortParams = {
+      author: "desc",
+    };
+  } else if (sortBy === "titleAsc") {
+    sortParams = {
+      title: "asc",
+    };
+  } else if (sortBy === "titleDesc") {
+    sortParams = {
+      title: "desc",
+    };
+  }
 
   // sortparams: year ord title author
   const sortedData = [...dataToBeSorted];
@@ -58,6 +59,12 @@ export const sortData = async (
     for (const [property, order] of Object.entries(sortParams)) {
       const valueA = a[property as keyof These];
       const valueB = b[property as keyof These];
+      // Handle cases where values might be missing or undefined
+      if (valueA === undefined || valueB === undefined) {
+        // Fallback to default comparison
+        return 0;
+      }
+
       const compareResult =
         order === "asc"
           ? compareValues(valueA, valueB)

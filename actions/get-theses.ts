@@ -27,23 +27,29 @@ export const getTheses = async ({
   let result: These[];
   try {
     // await wait(1000);
+
     // Calculate start and end indices for the specified page
     const startIndex = (page - 1) * nbPerPage;
     const endIndex = startIndex + nbPerPage;
 
+    // getting data
     const { data } = await getLocalData();
-    const isCombinedSearch = category || langue || year;
+    const isCombinedSearch = !!category || !!langue || !!year;
 
+    // console.log(isCombinedSearch)
+    // console.log({ category, langue, year });
     if (!isCombinedSearch) {
       result = await baseSearch(data, search ?? "");
     } else {
+      // let searchParams = Object.entries({category,langue,year}).filter(([key,value]) =>)
       result = await combinedSearch(data, search ?? "", {
-        category,
-        langue,
-        year,
+        ...(category && { category }),
+        ...(langue && { langue }),
+        ...(year && { year }),
       });
     }
-    // 
+    // console.log(result);
+    //
     const sortedData = await sortData(result, sort);
     const totalTheses = sortedData.length;
     const totalPages = Math.ceil(totalTheses / nbPerPage) || 1;

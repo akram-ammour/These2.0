@@ -119,7 +119,7 @@ export const getSearchParams = async (searchParams: searchParams) => {
     | "fr"
     | "eng"
     | undefined;
-  const year = isPartOfNumberRange(searchParams?.year || NaN);
+  const year = isPartOfNumberRange(Number(searchParams?.year));
   // console.log(sort,categ,lang,year,sort,page);
   return { search, categ, lang, year, sort, page };
 };

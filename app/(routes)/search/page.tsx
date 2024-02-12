@@ -3,6 +3,7 @@ import QueryListing from "@/components/query-listing";
 import QueryPagination from "@/components/query-pagination";
 import SearchInput from "@/components/searchInput";
 import { getSearchParams } from "@/lib/utils";
+import { writeFileSync } from "fs";
 import { Metadata } from "next";
 
 type Props = {
@@ -28,6 +29,8 @@ const page = async ({ searchParams }: Props) => {
       page: page,
       sort: sort,
     })) ?? fallBackData;
+  // writeFileSync("./test.json", JSON.stringify(pageData, null, 2),'utf-8'); 
+
   return (
     // todo fix this bug where if user searches for something in page nth n!== 1 with search different than prv return to page 1
     <div className="h-full flex flex-col max-w-7xl m-auto">

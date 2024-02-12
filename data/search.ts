@@ -81,30 +81,42 @@ type Criteria = {
 export const combinedSearch = async (
   data: These[],
   query: string,
-  criteria: Criteria
+  criteria?: Criteria
 ) => {
   const basicSearch = await baseSearch(data, query);
-
-  return basicSearch.filter((item) => {
+  if (!criteria || Object.keys(criteria).length === 0) {
+    return basicSearch
+  }
+  return basicSearch.filter((these) => {
     // Check if all specified criteria are met
     return Object.entries(criteria).every(([key, value]) => {
-      if (key === "category") {
-        // For category, check if the lowercase value is included
-        // console.log(value)
-        // console.log(new Date().getMilliseconds())
+      if (key === "category" && value !== undefined) {
+        if (
+          slugify((value as string).toLowerCase()) ===
+          slugify("Not Classed Yet".toLowerCase())
+        ) {
+          return (
+            !these[key] ||
+            these[key]!.length < 3 ||
+            !Array.isArray(these[key])
+          );
+        }
         return (
-          item[key] &&
-          Array.isArray(item[key]) &&
-          (item[key] as string[]).some((entry) =>
-            slugify(entry).toLowerCase().includes(String(value).toLowerCase())
+          these[key] &&
+          Array.isArray(these[key]) &&
+          these[key]!.length === 3 &&
+          these[key]!.some(
+            (entry) =>
+              slugify(String(entry).toLowerCase()) ===
+              slugify((value as string).toLowerCase())
           )
         );
-      } else if (key === "year") {
+      } else if (key === "year" && value !== undefined) {
         // For year, convert to string and check if it includes the value
-        return item[key].toString().includes(value.toString());
-      } else if (key === "langue") {
+        return these[key].toString() === `${value}`;
+      } else if (key === "langue" && value !== undefined) {
         // For other keys, check if the lowercase value is included
-        return item[key].toLowerCase().includes(String(value).toLowerCase());
+        return these[key].toLowerCase().includes(String(value).toLowerCase());
       }
     });
   });

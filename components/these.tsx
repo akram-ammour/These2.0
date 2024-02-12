@@ -17,7 +17,11 @@ const These = ({ these }: Props) => {
         <CardContent className="flex items-center  gap-4 p-2">
           <div className="rounded-md">
             <Image
-              src={getImageByCategory(these?.category?.[2] || "idk")}
+              src={getImageByCategory(
+                these?.category?.length === 0 || !these?.category
+                  ? "idk"
+                  : these?.category?.[these?.category?.length - 1]
+              )}
               alt="image"
               width={200}
               height={100}
@@ -30,7 +34,9 @@ const These = ({ these }: Props) => {
                 {these.title}
               </h1>
               <p className="truncate font-bold text-[12px] md:text-base text-blue-600">
-                {these?.category?.[2] || "idk"}
+                {these?.category?.length === 0 || !these?.category
+                  ? "Not Available"
+                  : these?.category?.[these?.category?.length - 1]}
               </p>
               <p className="truncate font-medium text-[11px] md:text-sm  text-gray-400">
                 Dr. {formatTitle(these.author) || "Not Available"}

@@ -28,7 +28,7 @@ const Page = async ({ params: { theseId } }: Props) => {
   const { data } = await getLocalData();
   const found = data.find((item) => item.href.includes(theseId));
   if (!found) {
-    return <p>these not found</p>;
+    return redirect("/search");
   }
   return (
     <div className="h-full  py-12 px-8 sm:px-12 md:px-20 lg:px-32 ">

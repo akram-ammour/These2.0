@@ -30,7 +30,7 @@ const TheseCard = ({ these }: Props) => {
           <p className="font-medium">
             {these.category
               ? these.category.map((cat, index) =>
-                  index === 2 ? (
+                  index === these.category?.length! - 1 ? (
                     <Link
                       href={`/search?categ=${slugify(cat)}`}
                       className="text-blue-600 font-bold hover:underline"
