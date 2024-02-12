@@ -18,21 +18,21 @@ function compareValues(valueA: any, valueB: any) {
 }
 type sortParamsType = {
   year?: "asc" | "desc";
-  order?: "asc" | "desc";
+  ord?: "asc" | "desc";
   title?: "asc" | "desc";
   author?: "asc" | "desc";
 };
-export const sortData = async (dataToBeSorted: These[], sortBy: sort) => {
-  let sortParams: sortParamsType = {};
+export const sortData = async (dataToBeSorted:These[], sortBy:sort) => {
+  let sortParams:sortParamsType = {};
   if (sortBy === "") {
     sortParams = {
       year: "asc",
-      order: "asc",
+      ord: "asc",
     };
   } else if (sortBy === "orderDesc") {
     sortParams = {
       year: "desc",
-      order: "desc",
+      ord: "desc",
     };
   } else if (sortBy === "authorAsc") {
     sortParams = {
@@ -65,13 +65,22 @@ export const sortData = async (dataToBeSorted: These[], sortBy: sort) => {
         return 0;
       }
 
-      const compareResult =
-        order === "asc"
-          ? compareValues(valueA, valueB)
-          : compareValues(valueB, valueA);
+      // Perform sorting based on property and order
+      if (property === 'year') {
+        // Sort by year first
+        if (valueA !== valueB) {
+          return order === 'asc' ? Number(valueA) - Number(valueB) : Number(valueB) - Number(valueA);
+        }
+      } else {
+        // Sort by other properties
+        const compareResult =
+          order === "asc"
+            ? compareValues(valueA, valueB)
+            : compareValues(valueB, valueA);
 
-      if (compareResult !== 0) {
-        return compareResult;
+        if (compareResult !== 0) {
+          return compareResult;
+        }
       }
     }
 
