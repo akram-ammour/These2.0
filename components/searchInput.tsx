@@ -37,9 +37,13 @@ const SearchInput = ({ showOptions }: Props) => {
     (debouncedValue: string) => {
       let params = new URLSearchParams(searchParams);
 
+      // test if this is correct
+      if (debouncedValue != searchQuery) {
+        params.set("page", "1");
+      }
+
       if (debouncedValue.length > 0) {
         params.set("search", debouncedValue);
-        // params.delete("page")
         // todo find a way to fix the issue that when user is in another page and searches he appears in firstPage
       } else {
         params.delete("search");

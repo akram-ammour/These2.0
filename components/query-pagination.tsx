@@ -39,14 +39,13 @@ const QueryPagination = ({ currentPage, totalPages }: Props) => {
   useEffect(() => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
     let page = params.get("page") ?? 1;
-    page = Number(page)
-    console.log(page)
-    // if(year)
-    if(page < 1 || page > totalPages){
-      params.delete("page")
+    page = Number(page);
+
+    if (page < 1 || page > totalPages) {
+      params.delete("page");
       router.replace(`${pathname}?${params.toString()}`);
     }
-  }, []);
+  }, [currentPage,totalPages,searchParams,router,pathname]);
   return (
     <Pagination>
       <PaginationContent className="flex items-center justify-between w-full">

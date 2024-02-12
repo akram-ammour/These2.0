@@ -38,14 +38,16 @@ const PdfRenderer = ({ title, href }: Props) => {
               }
               onLoadError={(e) => {
                 toast.error("Missing pdf", {
-                  description: "Couldn't locate pdf file in server.",
+                  description:
+                    "Couldn't locate pdf file in server. check your wifi.",
                 });
                 // console.log(e);
               }}
               error={
                 <div className="min-h-[420px] w-full flex flex-col items-center justify-center">
                   <Loader className="h-12 w-12 animate-none" />
-                  <p>pdf not found :(</p>
+                  <p>pdf error :(</p>
+                  {/* <p>pdf not found :(</p> */}
                 </div>
               }
               file={href}

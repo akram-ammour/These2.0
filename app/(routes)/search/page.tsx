@@ -29,7 +29,7 @@ const page = async ({ searchParams }: Props) => {
       sort: sort,
     })) ?? fallBackData;
   return (
-    // todo fix this bug to replicate it i need to reset the page to 0
+    // todo fix this bug where if user searches for something in page nth n!== 1 with search different than prv return to page 1
     <div className="h-full flex flex-col max-w-7xl m-auto">
       <SearchInput showOptions={isShowOptions} />
 

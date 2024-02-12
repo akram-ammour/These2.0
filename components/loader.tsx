@@ -4,10 +4,10 @@ import Image from "next/image";
 type Props = {
   width?: number;
   height?: number;
-  className?: string | undefined
+  className?: string | undefined;
 };
 
-const Loader = ({ width=70, height=70,className }: Props) => {
+const Loader = ({ width = 70, height = 70, className }: Props) => {
   return (
     <Image
       src={"/loader.svg"}
@@ -15,7 +15,7 @@ const Loader = ({ width=70, height=70,className }: Props) => {
       width={width}
       height={height}
       alt="logo loading"
-      className={cn("animate-spin",className)}
+      className={cn("animate-spin select-none", className)}
     />
   );
 };
