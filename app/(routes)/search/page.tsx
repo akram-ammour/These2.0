@@ -20,16 +20,13 @@ const page = async ({ searchParams }: Props) => {
   );
   const isShowOptions = !!categ || !!lang || !!year;
 
-  const fallBackData = { pageData: [], totalPages: 1, totalTheses: 0 };
-  // console.log("lang is: ",lang)
   const { pageData, totalPages, totalTheses } =
-    (await getTheses({
+    await getTheses({
       searchParams: { search: search, category: categ, langue: lang, year },
       nbPerPage: 50,
       page: page,
       sort: sort,
-    })) ?? fallBackData;
-  // writeFileSync("./test.json", JSON.stringify(pageData, null, 2),'utf-8'); 
+    });
 
   return (
     // todo fix this bug where if user searches for something in page nth n!== 1 with search different than prv return to page 1

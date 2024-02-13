@@ -1,7 +1,9 @@
 function compareValues(valueA: any, valueB: any) {
   if (typeof valueA === "string" && typeof valueB === "string") {
+    
     // Case-insensitive string comparison
     return valueA.localeCompare(valueB, undefined, { sensitivity: "base" });
+  
   } else if (
     typeof valueA === "number" &&
     typeof valueB === "number" &&
@@ -16,13 +18,16 @@ function compareValues(valueA: any, valueB: any) {
     });
   }
 }
+
 type sortParamsType = {
   year?: "asc" | "desc";
   ord?: "asc" | "desc";
   title?: "asc" | "desc";
   author?: "asc" | "desc";
 };
+
 export const sortData = async (dataToBeSorted:These[], sortBy:sort) => {
+  
   let sortParams:sortParamsType = {};
   if (sortBy === "") {
     sortParams = {
@@ -52,7 +57,7 @@ export const sortData = async (dataToBeSorted:These[], sortBy:sort) => {
     };
   }
 
-  // sortparams: year ord title author
+  // sortparams: spreadData
   const sortedData = [...dataToBeSorted];
 
   sortedData.sort((a, b) => {

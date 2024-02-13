@@ -1,12 +1,16 @@
 import { slugify } from "@/lib/utils";
 
+// normalize string and remove undetected characters
 function normalizeString(str: string) {
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9\s]/g, "");
 }
+
+// base search
 export const baseSearch = async (data: These[], query: string) => {
+  // normalized query search
   const normalizedQuery = normalizeString(query.toLowerCase());
 
   return data.filter((item) => {
@@ -43,7 +47,6 @@ export const baseSearch = async (data: These[], query: string) => {
       categ.includes(normalizedQuery)
     );
 
-    //   const coteMatch = normalizedCote.includes(normalizedQuery);
 
     const profMatch = normalizedProfs.some((prof) =>
       prof.includes(normalizedQuery)
@@ -66,11 +69,10 @@ export const baseSearch = async (data: These[], query: string) => {
 
 // Example usage:
 // const strictSearchResults = strictSearch({
-//   title: "search query for title",
-//   author: "search query for author",
+//   search: "search query for title",
 //   year: "search query for year",
-//   tags: "search query for tags",
 //   category: "search query for category"
+//   lang: "search query for lang"
 // });
 type Criteria = {
   category?: string;

@@ -10,10 +10,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "These2.0",
   description: "Find fmpm Thesis easily with no struggle",
-  openGraph: {
-    title: "These2.0",
-    description: "Find fmpm Thesis easily with no struggle",
-  },
 };
 
 export default function RootLayout({

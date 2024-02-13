@@ -48,19 +48,3 @@ export default function Home() {
     </div>
   );
 }
-/*
-a these website should give me the ability to :
--> search by thesis
--> search by thesis_Id optionally
--> search by student
--> search by year
--> search by tag
--> search by category
--> search by Language
--> search by Prof
--> merge those search categories
-
--> display a these page that displays the screenshot of the page + infos regarding thesis like vercel with the available/online badge display in that page a similar thesis (the similar thesis should be either same module or same category.) grid-layout
-
-
-*/

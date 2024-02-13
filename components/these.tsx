@@ -52,7 +52,7 @@ const These = ({ these }: Props) => {
               <p className="truncate  text-gray-400  text-sm sm:text-base text-[10px] md:text-sm ">
                 Language:{" "}
                 <span className=" text-slate-900">
-                  {these.langue.includes("fre") ? "Fr" : "Eng"}
+                  {these.langue.includes("(fre)") ? "Fr" : "Eng"}
                 </span>
               </p>
             </div>

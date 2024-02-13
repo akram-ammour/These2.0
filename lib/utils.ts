@@ -3,14 +3,17 @@ import { imagePerCategory } from "@/lib/constants";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+// cn to merge classnames
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+// to sleep/ wait for testing purposes
 export const wait = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+// format as title
 export const formatTitle = (word: string) => {
   return word
     .trim()
@@ -20,7 +23,8 @@ export const formatTitle = (word: string) => {
     .join(" ");
 };
 
-export const getProfName = (inputString:string) : string => {
+// prof name for search purposes
+export const getProfName = (inputString: string): string => {
   // Split the input string into words
   const words = inputString.split(/\s+/);
 
@@ -30,12 +34,17 @@ export const getProfName = (inputString:string) : string => {
 
   // Iterate through each word
   for (let word of words) {
-    if(word.length >= minLength && !word.toLowerCase().includes("pr") && !word.includes(".")){
-      largestWords.push(word.toLowerCase().trim())
+    // only push words that do not contains pr or a .
+    if (
+      word.length >= minLength &&
+      !word.toLowerCase().includes("pr") &&
+      !word.includes(".")
+    ) {
+      largestWords.push(word.toLowerCase().trim());
     }
   }
 
-  // Return the array of largest words joined by a space
+  // Return the array of largest words joined by a space which is the prof name ...
   return largestWords.join(" ");
 };
 
@@ -47,10 +56,12 @@ export const getImageByCategory = (category: string) => {
     .normalize("NFD")
     .replace(/[\u0300-\u036f\s-]/g, "")
     .toLowerCase();
+
   let image = imagePerCategory[formattedCategory as categoryImage];
   if (!image) {
     image = imagePerCategory["idk"];
   }
+
   return image;
 };
 
@@ -96,15 +107,18 @@ export const isPartOfCategories = async (categ: string) => {
   );
   return categories.includes(slugify(categ)) ? categ : undefined;
 };
+
 export const isPartOfNumberRange = (year: number) => {
   if (!year) return undefined;
   const currentYear: number = new Date().getFullYear();
   const baseYear: number = 2006;
+
   if (year >= baseYear && year <= currentYear) {
     return year;
   }
   return undefined;
 };
+
 export const isPartOfLang = (lang: string) => {
   const languages = ["fr", "eng"];
   return languages.includes(lang) ? lang : undefined;
@@ -120,6 +134,6 @@ export const getSearchParams = async (searchParams: searchParams) => {
     | "eng"
     | undefined;
   const year = isPartOfNumberRange(Number(searchParams?.year));
-  // console.log(sort,categ,lang,year,sort,page);
+  
   return { search, categ, lang, year, sort, page };
 };
