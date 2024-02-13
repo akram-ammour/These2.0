@@ -15,15 +15,15 @@ const PdfFullScreen = ({ href, title }: Props) => {
   // console.log("href is: ", href);
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState<boolean>(true);
-  const [error, setError] = useState();
+  // const [error, setError] = useState();
 
   const handleLoad = () => {
-    console.log("Embed is loaded");
-    console.log("handle loading: ", isPending);
+    // console.log("Embed is loaded");
+    // console.log("handle loading: ", isPending);
     setIsPending(false); // Set isPending to false when loaded
   };
   const handleError = () => {
-    console.error("Error loading embed");
+    // console.error("Error loading embed");
     setIsPending(false); // Set isPending to false on error
   };
   useEffect(() => {
