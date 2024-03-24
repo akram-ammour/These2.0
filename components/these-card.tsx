@@ -116,7 +116,7 @@ const TheseCard = ({ these }: Props) => {
                     >
                       {tag}
                     </Link>
-                    {index + 1 !== these.tags.length && (
+                    {these.tags && index + 1 !== these.tags.length && (
                       <span key={`separator-${index}`}> - </span>
                     )}
                   </Fragment>
