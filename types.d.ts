@@ -9,9 +9,9 @@ type These = {
   year: number;
   title: string;
   author: string;
-  langue: "Français (fre)" | "Anglais (eng)";
+  langue: string;
   category?: string[] | null; // if no category i'm gonna put the thesis in the unassigned category 
-  tags: string[];
+  tags: string[] | null;
   president: string;
   rapporteur: string;
   jury: string[];

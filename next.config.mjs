@@ -43,7 +43,6 @@ const nextConfig = {
     ],
   },
 
-  
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;
@@ -52,15 +51,15 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/get-pdf',
+        source: "/api/get-pdf",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/pdf',
+            key: "Content-Type",
+            value: "application/pdf",
           },
         ],
       },
-    ]
+    ];
   },
 };
 

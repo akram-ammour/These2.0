@@ -137,3 +137,4 @@ export const getSearchParams = async (searchParams: searchParams) => {
   
   return { search, categ, lang, year, sort, page };
 };
+
