@@ -1,6 +1,7 @@
 import { renewData } from "@/actions/renew-data";
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "edge"; // 'nodejs' is the default
 export const dynamic = "force-dynamic";
 export async function GET(request: NextRequest) {
   const { success, error } = await renewData();
