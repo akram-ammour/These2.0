@@ -11,6 +11,7 @@ const These = ({ these }: Props) => {
   if(!these.ord){
     console.log(these)
   }
+  // 
   const integral = `these${
     these.ord < 10 ? "0" + these.ord.toString() : these.ord
   }-${these.year.toString().slice(2)}`;
